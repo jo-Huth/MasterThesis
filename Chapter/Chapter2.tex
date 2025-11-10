@@ -1,0 +1,168 @@
+\section{State-of-the-Art in Cloud Motion Vector Estimation for Solar Nowcasting}
+\subsection{Image Acquisition}
+\label{sec:acquisition_preproc}
+
+\subsubsection*{Ground-based Sky Imagers}
+Reliable sky images must be acquired before estimating cloud motion vectors (CMVs). Ground-based sky imagers (ASIs), commonly referred to as Total Sky Imagers (TSIs), are widely used for short-term solar irradiance nowcasting applications due to their high spatial and temporal resolution \cite{chow2011,urquhart2016,pfister2003,lin2023}. ASIs typically provide a hemispheric view of the sky using fisheye lenses or reflective dome mirrors. Systems range from commercial solutions to low-cost, custom-built imagers integrated with single-board computers for distributed deployment \cite{ghonima2012,dev2020}.
+
+Key challenges introduced by ASIs include:
+\begin{itemize}
+  \item Extreme dynamic range near the sun (circumsolar region).
+  \item Radial geometric distortion (fisheye projection).
+  \item Shadows and occlusions from sun blockers and mounting structures.
+  \item Lens contamination (dirt, water, condensation).
+  \item Strong gradient in brightness between horizon and zenith.
+\end{itemize}
+
+\subsection{Preprocessing Techniques}
+Preprocessing greatly affects the quality of downstream CMV estimation. The subsections below summarize standard and advanced preprocessing steps used in recent literature.
+
+\subsubsection*{Geometric Distortion Correction}
+Fisheye optics introduce non-linear radial distortion. Pixels near the horizon represent larger ground-projected areas than those near the zenith, which introduces bias in motion estimation if not corrected \cite{werkmeister2015}. Standard correction projects the raw fisheye image to a physical dome or to an equal-area/equidistant map using camera calibration (intrinsic parameter estimation) and projection models (e.g., equidistant, equisolid-angle, polynomial models). Zhang's calibration method \cite{zhang2000} or similar procedures are commonly used to obtain distortion parameters.
+
+\subsubsection*{High Dynamic Range (HDR) Imaging}
+The large dynamic range between the sun and surrounding sky often saturates sensors. HDR techniques capture multiple exposures in rapid succession and merge them to recover detail in both the circumsolar region and the darker portions of the sky \cite{urquhart2016}. While HDR improves segmentation near the sun, merging exposures taken at different times can introduce minor temporal inconsistencies for rapidly moving clouds.
+
+\subsubsection*{Sun Occlusion and Shadow Compensation}
+Mechanical sun blockers mitigate sensor saturation but create blind regions. Common remedies include temporal inpainting from previous frames, spatial interpolation from neighboring pixels, and learning-based reconstruction methods \cite{peng2023hybrid,li2021}. The choice of method depends on real-time computational constraints and the size of the occluded region.
+
+\subsubsection*{Cloud Segmentation and Enhancement}
+Robust cloud masks increase the signal-to-noise ratio for CMV estimation. Traditional methods use color-space heuristics such as the red-blue ratio (RBR) or normalized difference indexes \cite{long2006,dev2017}. Adaptive thresholding using reference Clear Sky Libraries (CSL) improves robustness against seasonal and atmospheric variations \cite{dev2016}. Modern approaches employ semantic segmentation networks (e.g., U-Net variants) trained on annotated ASI datasets to produce high-quality cloud masks under varied illumination conditions \cite{dev2019,nouri2021skycam}.
+
+\subsubsection*{Noise Reduction and Nighttime Imaging}
+When operating at low-light conditions or with noisy sensors, temporal filtering (temporal averaging or median filtering), spatial denoising (bilateral filters or median filters), and model-based denoising (CNN denoisers) improve image quality \cite{sommer2025infrared}. Nighttime ASI operation remains an emerging research area; infrared thermal cameras have been successfully employed for nighttime cloud detection \cite{lagrosas2021,shi2024nighttime}, and learning-based denoisers represent an active direction for future development \cite{sommer2025infrared}.
+
+\subsubsection*{Radiometric Calibration and Vignetting Correction}
+Vignetting and non-uniform sensor response bias radiometric measurements across the field of view \cite{kim2008,lebourgeois2008}. Calibration via polynomial vignetting models or lookup tables \cite{lebourgeois2008,kuusk2007}, coupled with mapping of pixel intensity to irradiance through radiometric response functions \cite{kim2008}, improves both segmentation and optical-flow consistency. For all-sky imagers used in solar forecasting applications, comprehensive radiometric and geometric calibration procedures are essential \cite{urquhart2015dev,urquhart2016}.
+
+\subsubsection*{Cloud Height Estimation}
+Cloud height is essential for converting 2D image motion into physical wind vectors and for correctly estimating the impact on surface irradiance \cite{nouri2019}. Common methods include:
+\begin{enumerate}
+  \item \textbf{Stereo ASIs:} Triangulation between two or more spatially separated imagers yields height estimates using geometric relationships and baseline distance $b$ \cite{yang2014}. For two-view triangulation:
+  \[
+  H = \frac{b}{\tan(\theta_1)-\tan(\theta_2)}
+  \]
+  where $\theta_1$ and $\theta_2$ are the viewing angles from each imager.
+  \item \textbf{Satellite fusion:} Combine ASI-derived motion with satellite infrared (IR) cloud-top products to infer height layers.
+  \item \textbf{Learning-based retrieval:} CNN regressors trained with ceilometer or lidar labels can estimate cloud-top height from single ASI images.
+\end{enumerate}
+
+Multi-layer cloud situations remain challenging: overlapping motions at different altitudes can produce conflicting 2D motion fields that complicate accurate CMV estimation.
+
+\subsection{Cloud Motion Vector Estimation}
+\label{sec:cmv_estimation}
+
+\subsubsection{Optical Flow Algorithms}
+Optical flow (OF) estimates the apparent motion of brightness patterns between consecutive frames. Under the brightness constancy assumption, the OF constraint equation is:
+\[
+I_x \, u + I_y \, v + I_t = 0,
+\]
+where $I_x$, $I_y$, and $I_t$ denote partial derivatives of image intensity in the $x$, $y$, and temporal $t$ dimensions, respectively, and $u$ and $v$ are the horizontal and vertical components of the flow vector. Using vector notation, we write the motion vector as $\vec{v}=(u,v)^{\mathsf{T}}$.
+
+The single linear constraint per pixel gives rise to the \emph{aperture problem}. Additional constraints (e.g., smoothness assumptions) or spatial support (local patches) are required to estimate $\vec{v}$ uniquely \cite{horn1981determining}. Optical flow methods have been extensively applied to cloud motion estimation for solar forecasting \cite{urquhart2015,marquez2013}.
+
+
+\subsubsection*{Horn--Schunck (Global Dense)}
+The Horn--Schunck (HS) algorithm formulates optical flow as a global optimization problem combining data fidelity (brightness constancy) and a spatial smoothness regularization term:
+\[
+E_{\text{HS}} = \iint \left( I_x u + I_y v + I_t \right)^2 + \lambda \left(\|\nabla u\|^2 + \|\nabla v\|^2\right) \, dx \, dy,
+\]
+where $\lambda$ is the regularization parameter that balances data fidelity and smoothness. The HS method produces dense flow fields including in textureless regions, but is computationally intensive and sensitive to violations of the brightness constancy assumption \cite{horn1981determining}.
+
+\subsubsection*{Lucas--Kanade (Local Sparse)}
+The Lucas--Kanade (LK) method assumes constant motion within a small neighborhood and solves for $\vec{v}$ in a least-squares sense over that patch. LK computes sparse velocity vectors at salient features (e.g., corners and edges) and is computationally faster than global methods; however, it struggles in regions with low-texture clouds \cite{lucas1981iterative}.
+
+\subsubsection*{Farneb\"ack (Dense Polynomial Expansion)}
+Farneb\"ack's method approximates local neighborhoods with quadratic polynomials and derives dense displacement by comparing polynomial coefficients between consecutive frames \cite{farneback2003two}. This approach balances computational efficiency with estimation accuracy and is commonly employed in ASI-based CMV studies \cite{urquhart2016}.
+
+\subsubsection{Block Matching Algorithms}
+Block matching partitions the image into rectangular blocks and searches for the best matching blocks in the subsequent frame using similarity metrics (e.g., Sum of Absolute Differences [SAD] or Sum of Squared Differences [SSD]). Early cloud forecasting applications employed cross-correlation-based block matching \cite{hamill1993}, and the method has been extended to derive cloud velocity from arrays of solar radiation sensors \cite{bosch2013}. Block matching is computationally efficient and practical for real-time applications; however, it provides coarse motion estimates and struggles with non-rigid cloud deformation.
+
+\subsubsection{Phase Correlation}
+Phase correlation estimates translational displacement via the cross-power spectrum in the Fourier domain. This approach is robust to uniform illumination changes and efficient via FFT computation, but assumes rigid translation and is less suited to deforming cloud fields. Recent work has explored combining phase correlation with optical flow for edge-deployed cloud motion estimation \cite{raut2023}.
+
+\subsubsection{Hybrid Methods}
+Hybrid approaches combine block matching, optical flow, and phase correlation to leverage the complementary strengths of each method (robustness to illumination changes, deformation handling, and computational efficiency). Peng et al. have developed hybrid OF+BMA frameworks in multiple studies \cite{peng2016,peng2023hybrid}, demonstrating improved robustness for short-term solar forecasting. Additional hybrid approaches include fusion with radiation sensor networks \cite{rodriguezbenitez2021} and edge-optimized implementations \cite{raut2023}.
+
+\subsubsection{Deep Learning and Machine Learning Approaches}
+\label{sec:deep_learning}
+
+Classical computer vision techniques are limited by brightness-constancy violations, non-rigid deformation, and low-texture regions in cloud images. Deep learning approaches have been developed both to estimate optical flow directly and to forecast future sky images or irradiance without explicit CMV computation.
+
+\subsubsection*{CNNs for Spatial Feature Extraction}
+Convolutional neural networks (CNNs) extract hierarchical spatial features well-suited for cloud segmentation, texture discrimination, and radiometric correction stages \cite{nouri2021skycam,doshi2022,jung2020}.
+
+\subsubsection*{RNNs and ConvLSTMs for Spatio-Temporal Modeling}
+Recurrent neural networks, particularly ConvLSTM (Convolutional Long Short-Term Memory) architectures, model temporal dynamics while preserving spatial structure. These networks are widely employed for sequence forecasting of sky images and nowcasting of irradiance \cite{shi2015,qin2022cloudcast}.
+
+\subsubsection*{Transformers and Attention-Based Models}
+Transformer architectures \cite{vaswani2017} with global self-attention mechanisms excel at capturing long-range temporal dependencies and enabling cross-modal fusion (e.g., combining ASI sequences with ancillary irradiance or meteorological data). The Informer architecture \cite{zhou2021informer} addresses computational efficiency challenges of standard Transformers for long sequence forecasting through probabilistic sparse attention, making it particularly suitable for time-series prediction tasks. Variants such as Temporal Fusion Transformers and SolarFormer have been successfully adapted for solar irradiance nowcasting tasks, demonstrating competitive performance in capturing both short-term fluctuations and long-term trends \cite{alorf2025temporal,li2024solarformer}.
+
+\subsection*{Deep Optical Flow Models}
+End-to-end learned optical flow has advanced rapidly in recent years. Representative models include:
+
+\begin{itemize}
+  \item \textbf{FlowNet / FlowNet2.0:} Early convolutional encoder--decoder architectures that established end-to-end supervised optical flow estimation \cite{dosovitskiy2015flownet,ilg2017flownet2}.
+  \item \textbf{PWC-Net:} Pyramid, Warping, and Cost volume network; efficient and accurate for large displacements \cite{sun2018pwc}.
+  \item \textbf{RAFT:} Recurrent All-Pairs Field Transforms; employs iterative refinement on an all-pairs correlation volume and achieves state-of-the-art performance on many benchmarks \cite{teed2020raft}.
+  \item \textbf{Unsupervised / Self-supervised variants:} Methods such as UnFlow and DDFlow enable training on unlabeled ASI sequences using photometric and smoothness losses \cite{meister2018unflow,liu2019ddflow}.
+\end{itemize}
+
+Deep learning-based optical flow models substantially reduce Endpoint Error (EPE) compared to classical dense methods in scenes with deformation and illumination variations. Consequently, they are highly promising candidates for CMV extraction from all-sky imagers.
+
+\subsubsection*{Direct Irradiance Prediction Models}
+Some models bypass explicit CMV estimation and predict global horizontal irradiance (GHI) or plane-of-array irradiance directly from image sequences. These architectures typically combine CNN-based encoders with LSTM or Transformer decoders and can achieve competitive forecasting skill for time horizons of up to several tens of minutes \cite{qin2022cloudcast,nouri2021skycam}.
+
+\subsection{Multi-Layer Clouds and Height-Dependent Motion}
+\label{sec:multilayer}
+
+Multi-layer cloud systems (e.g., a thin cirrus layer above lower cumulus clouds) present complex overlapping motion patterns. Two-dimensional optical flow computed on single images conflates motions from different altitudes, resulting in biased CMV estimates. Recent advances employ three-dimensional cloud retrieval techniques coupled with radiative transfer modeling to estimate height-dependent motion vectors \cite{kosmopoulos2024}. Strategies to handle multi-layer motion include:
+\begin{itemize}
+  \item Separation of layers via stereo-derived height maps and per-layer flow estimation.
+  \item Learning-based multi-head models that regress separate motion components for each layer.
+  \item Temporal clustering and motion consistency tests to identify and isolate distinct moving layers.
+\end{itemize}
+
+Accurate layer separation is crucial for converting CMVs to physical advection velocities and for correctly estimating irradiance impact at the ground.
+
+\subsection{Evaluation Metrics and Benchmarking}
+\label{sec:benchmark}
+
+\subsubsection{Vector and Flow Metrics}
+Common metrics for evaluating CMV and optical flow algorithms include \cite{baker2011,barron1994}:
+\begin{itemize}
+  \item \textbf{Endpoint Error (EPE):} $\mathrm{EPE} = \|\vec{v} - \vec{v}_{\mathrm{gt}}\|$, representing the Euclidean distance between estimated and ground-truth flow vectors (computed as mean or median across pixels) \cite{baker2011}.
+  \item \textbf{Angular Error (AE):} $\mathrm{AE} = \arccos\left(\dfrac{\vec{v}\cdot\vec{v}_{\mathrm{gt}}}{\|\vec{v}\|\|\vec{v}_{\mathrm{gt}}\|}\right)$, measuring the angle between estimated and ground-truth vectors \cite{barron1994,baker2011}.
+  \item \textbf{Coverage / Valid Vector Rate:} The percentage of pixels with confident or valid flow vectors, typically determined using confidence measures based on image structure, energy convergence, or learned predictors \cite{kondermann2008,macaodha2013}. Sparse feature-based methods typically provide low coverage ($<$10\%), while dense variational and deep learning methods achieve near-complete coverage ($>$95\%). The inverse metric, Fl-all, measures the percentage of outlier pixels in benchmark evaluations \cite{menze2015,baker2011}.
+\end{itemize}
+
+\subsubsection{Irradiance and Forecast Metrics}
+For photovoltaic applications, additional metrics evaluate the quality of final energy-relevant forecasts \cite{zhang2015,yang2020}:
+\begin{itemize}
+  \item \textbf{RMSE / nRMSE / MAE} of global horizontal irradiance (GHI) or plane-of-array irradiance forecasts \cite{zhang2015}.
+  \item \textbf{Ramp-rate error:} Measures errors in rapid irradiance changes, which are particularly relevant for electrical grid stability \cite{nouri2024ramp}.
+  \item \textbf{Forecast skill score:} Quantifies relative improvement over persistence forecasting \cite{yang2020,voyant2018}.
+\end{itemize}
+
+\subsubsection{Benchmark Datasets and Protocol}
+A fair and rigorous benchmark should standardize \cite{baker2011,nie2024}:
+\begin{itemize}
+  \item ASI hardware parameters (field of view, spatial resolution, exposure strategy).
+  \item Ground truth irradiance sensor placement and sampling rate.
+  \item Forecast horizons and temporal aggregation windows (e.g., 1-minute or 5-minute intervals).
+  \item Cloud-type stratification (stratiform, cumulus, and multi-layer cloud conditions).
+\end{itemize}
+
+Representative public datasets and testbeds include various site-specific ASI collections and combined ASI--irradiance datasets \cite{urquhart2016,qin2022cloudcast,nouri2021skycam,nie2024}. Established ground-truth irradiance measurement networks such as SURFRAD \cite{augustine2000} and NREL's Solar Radiation Research Laboratory (SRRL) \cite{stoffel1981} provide independent validation data for forecasting model evaluation. Researchers should report both optical flow metrics (EPE, AE) and application metrics (RMSE, MAE irradiance) to clearly link algorithmic improvements to practical photovoltaic forecasting performance \cite{yang2020,logothetis2022}.
+
+\subsubsection{Hybrid Methods and Operational Considerations}
+Operational CMV estimation pipelines typically combine deep learning--based optical flow for motion extraction, classical radiometric preprocessing, and postprocessing for irradiance conversion (accounting for cloud height and optical thickness). Key operational constraints include computational latency and bandwidth limitations for edge deployment, robustness to lens contamination and aging, and seamless integration with photovoltaic control systems.
+
+\subsection{Summary and Research Gaps}
+This chapter has reviewed ASI image acquisition, preprocessing techniques, classical and deep learning--based optical flow methods, multi-layer cloud challenges, and benchmarking metrics for CMV estimation. The following key research gaps motivate this thesis work:
+\begin{itemize}
+  \item \textbf{Cloud height retrieval at high temporal resolution:} Enables accurate conversion of 2D CMVs to three-dimensional physical wind vectors.
+  \item \textbf{Layer separation techniques:} Robust methods to disentangle and separately track overlapping cloud layers at different altitudes.
+  \item \textbf{Label-scarce training methods:} Development of deep optical flow models for ASI data via self-supervised or synthetic-to-real domain transfer approaches.
+  \item \textbf{Real-time edge-capable implementations:} Deployment-ready algorithms that balance accuracy with computational latency for integration into operational PV plants.
+\end{itemize}
