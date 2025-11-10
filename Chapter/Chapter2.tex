@@ -155,8 +155,9 @@ A fair and rigorous benchmark should standardize \cite{baker2011,nie2024}:
 
 Representative public datasets and testbeds include various site-specific ASI collections and combined ASI--irradiance datasets \cite{urquhart2016,qin2022cloudcast,nouri2021skycam,nie2024}. Established ground-truth irradiance measurement networks such as SURFRAD \cite{augustine2000} and NREL's Solar Radiation Research Laboratory (SRRL) \cite{stoffel1981} provide independent validation data for forecasting model evaluation. Researchers should report both optical flow metrics (EPE, AE) and application metrics (RMSE, MAE irradiance) to clearly link algorithmic improvements to practical photovoltaic forecasting performance \cite{yang2020,logothetis2022}.
 
-\subsubsection{Hybrid Methods and Operational Considerations}
-Operational CMV estimation pipelines typically combine deep learning--based optical flow for motion extraction, classical radiometric preprocessing, and postprocessing for irradiance conversion (accounting for cloud height and optical thickness). Key operational constraints include computational latency and bandwidth limitations for edge deployment, robustness to lens contamination and aging, and seamless integration with photovoltaic control systems.
+\subsubsection*{Operational Considerations and Real-world Integration}
+While the preceding sections reviewed algorithmic advances for CMV estimation, practical deployment demands integrated solutions that address both methodological and hardware-level constraints. Operational CMV estimation pipelines typically combine deep learning--based optical flow for motion extraction, classical radiometric preprocessing, and postprocessing for irradiance conversion (accounting for cloud height and optical thickness). Key operational constraints include computational latency and bandwidth limitations for edge deployment, robustness to lens contamination and aging, and seamless integration with photovoltaic control systems.
+
 
 \subsection{Summary and Research Gaps}
 This chapter has reviewed ASI image acquisition, preprocessing techniques, classical and deep learning--based optical flow methods, multi-layer cloud challenges, and benchmarking metrics for CMV estimation. The following key research gaps motivate this thesis work:
