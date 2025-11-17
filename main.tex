@@ -8,98 +8,53 @@
 
 \documentclass[a4paper,11pt,twoside]{book}
 
-% Packages
-\usepackage[
-  a4paper,
-  twoside,
-  inner=2.5cm,
-  outer=2cm,
-  top=2.5cm,
-  bottom=2.5cm
-]{geometry}
+% Import all configuration files
+\input{config/packages}
+\input{config/formatting}
+\input{config/headers}
+\input{config/custom-commands}
 
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{hyperref}
-\usepackage{cite}
-\usepackage{titlesec}
-\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{1em}{}
-
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE]{}
-\fancyhead[RO]{\rightmark}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\makeatletter
-\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
-\makeatother
-
-\usepackage{tocloft}
-\newlistof{listequations}{equ}{List of Equations} % 'equ' is a short prefix
-
-\newcommand{\listequationsname}{List of Equations}
-\newcommand{\eqnregister}[1]{\addcontentsline{equ}{listequations}{\protect\numberline{\theequation}#1}}
-
-\usepackage{fontspec}
-\setmainfont{Arial}
-
+% Document metadata
 \title{Estimation of Cloud Motion Vectors from All-Sky Imagers: A Comparison of Optical Flow and Machine Learning Approaches for Solar Nowcasting}
 \author{Jonathan Huth}
 \date{September 2025}
 
-\vspace{6pt}
-\setlength{\parskip}{6pt}
-\setlength{\parindent}{0pt}
-
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
-
 \begin{document}
 
-% Set roman page numbering for front matter
+% Front matter (roman numerals)
 \pagenumbering{roman}
 
-% Title page
 \maketitle
 \thispagestyle{empty}
 \cleardoublepage
 
-% Table of Contents (roman numerals)
 \tableofcontents
 \clearpage
 
-% Add more front matter here if needed (abstract, acknowledgements, etc.)
-
-% Switch to arabic for main content, start at page 1
+% Main content (arabic numerals)
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-% Chapter 1: Introduction (now page 1)
+% Chapters
 \chapter{Introduction}
 \input{Chapter/1-Introduction}
 \clearpage
 
-% Chapter 2: State-of-the-Art
 \chapter{State-of-the-Art in Cloud Motion Vector Estimation for Solar Nowcasting}
 \input{Chapter/2-State-of-the-art}
 \clearpage
 
-%Chapter 3: 
-\chapter{}
-\input{Chapter/Chapter3}
-\clearpage
+% Chapter 3 (placeholder)
+% \chapter{Methods}
+% \input{Chapter/3-Methods}
+% \clearpage
 
+% Back matter
 \cleardoublepage
-% List of equations
-\renewcommand{\listequationsname}{List of Equations}
+\renewcommand{\cftlistequationsname}{List of Equations}
 \listoflistequations
 \clearpage
 
-% Bibliography
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 \clearpage
