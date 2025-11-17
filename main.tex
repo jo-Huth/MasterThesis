@@ -66,7 +66,7 @@
 % Title page
 \maketitle
 \thispagestyle{empty}
-\clearpage
+\cleardoublepage
 
 % Table of Contents (roman numerals)
 \tableofcontents
@@ -88,14 +88,20 @@
 \input{Chapter/2-State-of-the-art}
 \clearpage
 
-% List of equations
+%Chapter 3: 
+\chapter{}
+\input{Chapter/Chapter3}
+\clearpage
+
 \cleardoublepage
+% List of equations
 \renewcommand{\listequationsname}{List of Equations}
 \listoflistequations
-\cleardoublepage
+\clearpage
 
 % Bibliography
 \bibliographystyle{IEEEtran}
 \bibliography{references}
+\clearpage
 
 \end{document}
