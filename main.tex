@@ -38,6 +38,12 @@
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
 \makeatother
 
+\usepackage{tocloft}
+\newlistof{listequations}{equ}{List of Equations} % 'equ' is a short prefix
+
+\newcommand{\listequationsname}{List of Equations}
+\newcommand{\eqnregister}[1]{\addcontentsline{equ}{listequations}{\protect\numberline{\theequation}#1}}
+
 \usepackage{fontspec}
 \setmainfont{Arial}
 
@@ -81,6 +87,12 @@
 \chapter{State-of-the-Art in Cloud Motion Vector Estimation for Solar Nowcasting}
 \input{Chapter/2-State-of-the-art}
 \clearpage
+
+% List of equations
+\cleardoublepage
+\renewcommand{\listequationsname}{List of Equations}
+\listoflistequations
+\cleardoublepage
 
 % Bibliography
 \bibliographystyle{IEEEtran}

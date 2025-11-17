@@ -1,4 +1,3 @@
-
 \section{Image Acquisition}
 \label{sec:acquisition_preproc}
 
@@ -42,9 +41,12 @@ Vignetting and non-uniform sensor response bias radiometric measurements across 
 
 \subsection{Optical Flow Algorithms}
 Optical flow (OF) estimates the apparent motion of brightness patterns between consecutive frames. Under the brightness constancy assumption, the OF constraint equation is:
-\[
-I_x \, u + I_y \, v + I_t = 0,
-\]
+
+\begin{equation}
+I_x \, u + I_y \, v + I_t = 0
+\eqnregister{Optical flow constraint (brightness constancy)}
+\end{equation}
+
 where $I_x$, $I_y$, and $I_t$ denote partial derivatives of image intensity in the $x$, $y$, and temporal $t$ dimensions, respectively, and $u$ and $v$ are the horizontal and vertical components of the flow vector. Using vector notation, we write the motion vector as $\vec{v}=(u,v)^{\mathsf{T}}$.
 
 The single linear constraint per pixel gives rise to the \emph{aperture problem}. Additional constraints (e.g., smoothness assumptions) or spatial support (local patches) are required to estimate $\vec{v}$ uniquely \cite{horn1981determining}. Optical flow methods have been extensively applied to cloud motion estimation for solar forecasting \cite{urquhart2015,marquez2013}.
@@ -52,9 +54,12 @@ The single linear constraint per pixel gives rise to the \emph{aperture problem}
 
 \subsubsection{Horn--Schunck (Global Dense)}
 The Horn--Schunck (HS) algorithm formulates optical flow as a global optimization problem combining data fidelity (brightness constancy) and a spatial smoothness regularization term:
-\[
-E_{\text{HS}} = \iint \left( I_x u + I_y v + I_t \right)^2 + \lambda \left(\|\nabla u\|^2 + \|\nabla v\|^2\right) \, dx \, dy,
-\]
+
+\begin{equation}
+E_{\text{HS}} = \iint \left( I_x u + I_y v + I_t \right)^2 + \lambda \left(\|\nabla u\|^2 + \|\nabla v\|^2\right) \, dx \, dy
+\eqnregister{Horn-Schunck global energy functional}
+\end{equation}
+
 where $\lambda$ is the regularization parameter that balances data fidelity and smoothness. The HS method produces dense flow fields including in textureless regions, but is computationally intensive and sensitive to violations of the brightness constancy assumption \cite{horn1981determining}.
 
 \subsubsection{Lucas--Kanade (Local Sparse)}
@@ -127,8 +132,24 @@ Accurate layer separation is crucial for converting CMVs to physical advection v
 \subsection{Vector and Flow Metrics}
 Common metrics for evaluating CMV and optical flow algorithms include:
 \begin{itemize}
- \item \textbf{Endpoint Error (EPE):} $\mathrm{EPE} = \|\vec{v} - \vec{v}_{\mathrm{gt}}\|$, representing the Euclidean distance between estimated and ground-truth flow vectors (computed as mean or median across pixels) \cite{baker2011}.
-  \item \textbf{Angular Error (AE):} $\mathrm{AE} = \arccos\left(\dfrac{\vec{v}\cdot\vec{v}_{\mathrm{gt}}}{\|\vec{v}\|\|\vec{v}_{\mathrm{gt}}\|}\right)$, measuring the angle between estimated and ground-truth vectors \cite{barron1994,baker2011}.
+ \item \textbf{Endpoint Error (EPE):} 
+ 
+\begin{equation}
+\mathrm{EPE} = \|\vec{v} - \vec{v}_{\mathrm{gt}}\|
+\eqnregister{Endpoint error for optical flow evaluation}
+\end{equation}
+
+representing the Euclidean distance between estimated and ground-truth flow vectors (computed as mean or median across pixels) \cite{baker2011}.
+
+  \item \textbf{Angular Error (AE):} 
+  
+\begin{equation}
+\mathrm{AE} = \arccos\left(\dfrac{\vec{v}\cdot\vec{v}_{\mathrm{gt}}}{\|\vec{v}\|\|\vec{v}_{\mathrm{gt}}\|}\right)
+\eqnregister{Angular error for optical flow evaluation}
+\end{equation}
+
+measuring the angle between estimated and ground-truth vectors \cite{barron1994,baker2011}.
+
   \item \textbf{Coverage / Valid Vector Rate:} The percentage of pixels 
   with confident or valid flow vectors \cite{kondermann2008,macaodha2013}. 
   Sparse methods typically provide <10\% coverage, while dense methods 
@@ -160,8 +181,19 @@ While the preceding sections reviewed algorithmic advances for CMV estimation, p
 Operational CMV estimation pipelines typically combine deep learning--based optical flow for motion extraction, classical radiometric preprocessing, and postprocessing for irradiance conversion (accounting for cloud height and optical thickness). Key operational constraints include computational latency and bandwidth limitations for edge deployment, robustness to lens contamination and aging, and seamless integration with photovoltaic control systems.
 
 \section{Summary and Research Gaps}
-This chapter has reviewed ASI image acquisition, preprocessing techniques, classical and deep learning--based optical flow methods, multi-layer cloud challenges, and benchmarking metrics for CMV estimation. The following key research gaps motivate this thesis work:
+
+Despite significant progress in the estimation of cloud motion vectors (CMVs) from all-sky imagers, several critical research gaps remain, particularly regarding the comparative effectiveness of classical optical flow techniques and modern machine learning approaches for solar nowcasting applications:
+
 \begin{itemize}
-  \item \textbf{Label-scarce training methods:} Development of deep optical flow models for ASI data via self-supervised or synthetic-to-real domain transfer approaches.
-  \item \textbf{Real-time edge-capable implementations:} Deployment-ready algorithms that balance accuracy with computational latency for integration into operational PV plants.
+\item \textbf{Comparative Evaluation:} Most prior studies focus on either optical flow or machine learning methods in isolation, leading to unclear conclusions about their relative strengths and weaknesses under real-world sky conditions (including factors such as cloud type, multi-layer structures, and varying illumination).
+
+\item \textbf{Robustness to Adverse Imaging Conditions:} Existing CMV algorithms often struggle with thin or multi-layered clouds, lens contamination, rapid cloud shape changes, and the geometric distortions inherent in fisheye sky imagers.
+
+\item \textbf{Data Integration and Benchmarking:} There is a lack of standardized datasets and benchmarking protocols for directly comparing algorithm performance, especially for ground-based systems. This hinders reproducibility and generalizable conclusions about which methods best support solar irradiance forecasting.
+
+\item \textbf{Real-world Deployment:} Few studies address how well these methods integrate into operational pipelines at photovoltaic power plants, including challenges in edge implementation, computational demands, and real-time responsiveness.
+
+\item \textbf{Cloud Height Estimation:} Converting 2D image motion into meaningful wind vectors requires reliable cloud height estimation, which remains a bottleneck, especially for machine learning models that lack multi-modal data inputs.
 \end{itemize}
+
+Addressing these gaps, this thesis will systematically compare and benchmark optical flow and machine learning-based CMV estimation methods using all-sky imager data, focusing on their capability and limitations for real-world solar nowcasting.
