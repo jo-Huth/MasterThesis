@@ -2,48 +2,88 @@
 %
 % Cloud Motion Vector Estimation for Solar Nowcasting
 % Master Thesis - Jonathan Huth
-% Last updated: November 10, 2025
+% Last updated: November 17, 2025
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[a4paper,11pt,twoside]{article}
+\documentclass[a4paper,11pt,twoside]{book}
 
 % Packages
-\usepackage{graphicx} % Required for inserting images
+\usepackage[
+  a4paper,
+  twoside,
+  inner=2.5cm,
+  outer=2cm,
+  top=2.5cm,
+  bottom=2.5cm
+]{geometry}
+
+\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{cite}
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{1em}{}
 
-% Title and Author
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{}
+\fancyhead[RO]{\rightmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\makeatletter
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\makeatother
+
+\usepackage{fontspec}
+\setmainfont{Arial}
+
 \title{Estimation of Cloud Motion Vectors from All-Sky Imagers: A Comparison of Optical Flow and Machine Learning Approaches for Solar Nowcasting}
 \author{Jonathan Huth}
 \date{September 2025}
 
-% Spacing settings
 \vspace{6pt}
-\setlength{\parskip}{12pt}
+\setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
 
 \begin{document}
 
+% Set roman page numbering for front matter
+\pagenumbering{roman}
+
 % Title page
 \maketitle
-\thispagestyle{empty}           % Remove page number from title page
+\thispagestyle{empty}
 \clearpage
 
-% Start page numbering at 1 for Chapter 1
+% Table of Contents (roman numerals)
+\tableofcontents
+\clearpage
+
+% Add more front matter here if needed (abstract, acknowledgements, etc.)
+
+% Switch to arabic for main content, start at page 1
+\pagenumbering{arabic}
 \setcounter{page}{1}
 
-% Chapter 1: Introduction
-\input{Chapter/Chapter1_Final}
+% Chapter 1: Introduction (now page 1)
+\chapter{Introduction}
+\input{Chapter/1-Introduction}
 \clearpage
 
 % Chapter 2: State-of-the-Art
-\input{Chapter/Chapter2_Final}
+\chapter{State-of-the-Art in Cloud Motion Vector Estimation for Solar Nowcasting}
+\input{Chapter/2-State-of-the-art}
 \clearpage
 
 % Bibliography
 \bibliographystyle{IEEEtran}
-\bibliography{bibliography_final}
+\bibliography{references}
 
 \end{document}
