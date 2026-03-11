@@ -1,0 +1,59 @@
+% ---- Step 5: Visualization ----
+
+% figure; imshow(img1Norm); hold on;
+% plot(flowFB1, 'DecimationFactor',[5 5],'ScaleFactor',15,'Color','red');
+% title('Farnebäck Flow');
+% 
+% figure; imshow(img2Norm); hold on;
+% plot(flowFB2, 'DecimationFactor',[5 5],'ScaleFactor',15,'Color','red');
+% title('Farnebäck Flow');
+% 
+% figure; imshow(img1Norm); hold on;
+% plot(flowLK1, 'DecimationFactor',[5 5],'ScaleFactor',15,'Color','blue');
+% title('Lucas-Kanade Flow');
+% 
+% figure; imshow(img2Norm); hold on;
+% plot(flowLK2, 'DecimationFactor',[5 5],'ScaleFactor',15,'Color','blue');
+% title('Lucas-Kanade Flow');
+
+% figure; imshow(img1Resized); hold on;
+% plot(flowRaftML1, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+% title('RAFT Matlab Flow');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftML2, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Matlab Flow');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_300, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 300');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_300_best, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 300 best metrics');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_600, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 600');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_600_best, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 600 best metrics');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_900, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 900');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_900_best, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 900');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_2000, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 2000');
+
+figure; imshow(img2Resized); hold on;
+plot(flowRaftPy_2000, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+title('RAFT Python Flow 2000');
+
+drawnow

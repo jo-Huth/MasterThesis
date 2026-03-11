@@ -1,0 +1,43 @@
+function ae_rad = compute_ae(flow_est, flow_gt, mask)
+% COMPUTE_AE Mean Angular Error between estimated and ground truth flow
+%
+% AE = mean( acos( dot(v_est, v_gt) / (|v_est| |v_gt|) ) ) over valid pixels
+%
+% Inputs: same as compute_epe
+% Output: ae - scalar mean angular error (radians)
+
+    % Extract velocity fields
+    if isa(flow_est, 'opticalFlow')
+        Vx_est = flow_est.Vx; Vy_est = flow_est.Vy;
+        Vx_gt = flow_gt.Vx; Vy_gt  = flow_gt.Vy;
+        mag_est = flow_est.Magnitude;
+        mag_gt  = flow_gt.Magnitude;
+        ori_est = flow_est.Orientation;
+        ori_gt = flow_gt.Orientation;
+    else
+        Vx_est = flow_est(:,:,1); Vy_est = flow_est(:,:,2);
+        Vx_gt  = flow_gt (:,:,1); Vy_gt  = flow_gt (:,:,2);
+        mag_est = sqrt(Vx_est.^2 + Vy_est.^2);
+        mag_gt  = sqrt(Vx_gt.^2 + Vy_gt.^2);
+    end
+
+    % Avoid division by zero
+    
+
+    validEst = (mag_est > 0.1) & mask; 
+    validGt = (mag_gt > 0.1) & mask;
+    
+    valid = validEst & validGt;
+
+    % Cosine similarity
+    cos_sim = (Vx_est.*Vx_gt + Vy_est.*Vy_gt) ./ (mag_est .* mag_gt);
+    cos_sim = max(-1, min(cos_sim, 1));  % Clamp to [-1, 1]
+    
+    % Angular error
+    ae_map = acos(cos_sim) * 180/pi;
+
+    ae_map(~mask) = 0;
+
+    ae_deg = mean(ae_map(valid));
+    ae_rad = mean(ori_gt(valid) - ori_est(valid));
+end
