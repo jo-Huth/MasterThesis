@@ -187,7 +187,7 @@ def run_inference(checkpoint_path, image_dir, output_dir, device,
     print(f'Mean FPS: {fps:.1f}')
     print(f'Peak GPU memory: {peak_gpu_mem:.1f} GB')
     print(f'Peak RAM usage: {ram_gb:.1f} GB')
-
+    print(f"GPU allocated: {torch.cuda.memory_allocated()/1e9:.1f} GB")
     print(f"\n{'='*80}")
     print(f"INFERENCE COMPLETE")
     print(f"{'='*80}\n")

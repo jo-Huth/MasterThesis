@@ -14,41 +14,41 @@
 % flow = load(flowPath);
 % flowRaftPy_kubric = opticalFlow(flow.Vx, flow.Vy);
 
-% % Load flow field
-% flowPath = sprintf('results/flowRaftPy/raft_finetune_300/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
-% flow = load(flowPath);
-% flowRaftPy_300 = opticalFlow(flow.Vx, flow.Vy);
-
-flowPath = sprintf('results/flowRaftPy/raft_finetune_300_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% Load flow field
+flowPath = sprintf('results/flowRaftPy/raft_finetune_300/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
 flow = load(flowPath);
 flowRaftPy_300 = opticalFlow(flow.Vx, flow.Vy);
 
-% %Load flow field
-% flowPath = sprintf('results/flowRaftPy/raft_finetune_600/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% flowPath = sprintf('results/flowRaftPy/raft_finetune_300_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
 % flow = load(flowPath);
-% flowRaftPy_600 = opticalFlow(flow.Vx, flow.Vy);
+% flowRaftPy_300_best = opticalFlow(flow.Vx, flow.Vy);
 
-flowPath = sprintf('results/flowRaftPy/raft_finetune_600_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+%Load flow field
+flowPath = sprintf('results/flowRaftPy/raft_finetune_600/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
 flow = load(flowPath);
 flowRaftPy_600 = opticalFlow(flow.Vx, flow.Vy);
 
-% Load flow field
-flowPath = sprintf('results/flowRaftPy/raft_finetune_900_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% flowPath = sprintf('results/flowRaftPy/raft_finetune_600_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% flow = load(flowPath);
+% flowRaftPy_600_best = opticalFlow(flow.Vx, flow.Vy);
+
+% % Load flow field
+% flowPath = sprintf('results/flowRaftPy/raft_finetune_900_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% flow = load(flowPath);
+% flowRaftPy_900_best = opticalFlow(flow.Vx, flow.Vy);
+
+flowPath = sprintf('results/flowRaftPy/raft_finetune_900/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
 flow = load(flowPath);
 flowRaftPy_900 = opticalFlow(flow.Vx, flow.Vy);
 
-% flowPath = sprintf('results/flowRaftPy/raft_finetune_900/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
-% flow = load(flowPath);
-% flowRaftPy_900 = opticalFlow(flow.Vx, flow.Vy);
-
-% %Load flow field
-% flowPath = sprintf('results/flowRaftPy/raft_finetune_2000/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
-% flow = load(flowPath);
-% flowRaftPy_2000 = opticalFlow(flow.Vx, flow.Vy);
-
-flowPath = sprintf('results/flowRaftPy/raft_finetune_2000_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+%Load flow field
+flowPath = sprintf('results/flowRaftPy/raft_finetune_2000/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
 flow = load(flowPath);
-flowRaftPy_2000= opticalFlow(flow.Vx, flow.Vy);
+flowRaftPy_2000 = opticalFlow(flow.Vx, flow.Vy);
+% 
+% flowPath = sprintf('results/flowRaftPy/raft_finetune_2000_best_metric/flowRaftPy_%s/flowRaftPy_%s.mat', timestamp{1}, timestamp{1});
+% flow = load(flowPath);
+% flowRaftPy_2000_best= opticalFlow(flow.Vx, flow.Vy);
 
 %% SAVE RESULTS
 

@@ -1,4 +1,4 @@
-function [coverage, validFLow] = compute_coverage(flow_est, mask, syntheticTranslation)
+function [coverage, validFLow] = compute_coverage(flow_est, mask)
 % COMPUTE_COVERAGE Fraction of valid flow vectors in masked region
 %
 % Inputs:

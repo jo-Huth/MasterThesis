@@ -71,7 +71,7 @@ def main():
         Config.validate_paths()
         Config.create_directories()
     except AssertionError as e:
-        print(f"\n❌ ERROR: {e}")
+        print(f"\n ERROR: {e}")
         sys.exit(1)
     
     # Get device
@@ -85,9 +85,9 @@ def main():
             config=Config,
             num_pairs=num_pairs
         )
-        print(f"✓ DataLoader created with {len(dataloader)} batches per epoch\n")
+        print(f" DataLoader created with {len(dataloader)} batches per epoch\n")
     except Exception as e:
-        print(f"\n❌ ERROR creating dataloader: {e}")
+        print(f"\n ERROR creating dataloader: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
@@ -97,9 +97,9 @@ def main():
         valloader = get_valdataloader(
             config=Config
         )
-        print(f"✓ ValDataLoader created with {len(valloader)}\n")
+        print(f" ValDataLoader created with {len(valloader)}\n")
     except Exception as e:
-        print(f"\n❌ ERROR creating valloader: {e}")
+        print(f"\n ERROR creating valloader: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
@@ -122,12 +122,12 @@ def main():
                 model.load_state_dict(checkpoint)
                 print(f"✓ Loaded checkpoint\n")
         else:
-            print(f"⚠️  Using pretrained Kubric weights\n")
+            print(f"  Using pretrained Kubric weights\n")
         
         model = model.to(device)
         
     except Exception as e:
-        print(f"\n❌ ERROR loading model: {e}")
+        print(f"\n ERROR loading model: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
@@ -142,12 +142,12 @@ def main():
             checkpoint = torch.load(checkpoint_path, map_location=device)
             print(f"Loading checkpoint: {checkpoint_path}")
         else:
-            print(f"⚠️  no checkpoints loaded\n")
+            print(f" no checkpoints loaded\n")
         
         kubric_model = kubric_model.to(device)
 
     except Exception as e:
-        print(f"\n❌ ERROR loading model: {e}")
+        print(f"\n ERROR loading model: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
@@ -275,7 +275,6 @@ def main():
                 proxy_epe=proxy_epe,
                 checkpoint_name=checkpoint_name
             )
-            print(f"💾 New best checkpoint: FBCE {fbce:.3f}")
 
         # Optional: early stop if plateau
         if epoch > 50 and fbce > prev_fbce + 0.01:  # No improvement
@@ -285,7 +284,7 @@ def main():
 
         # Early stopping
         if patience_counter >= Config.PATIENCE:
-            print(f"\n⚠️  Early stopping triggered after {epoch} epochs")
+            print(f"\n Early stopping triggered after {epoch} epochs")
             print(f"   No improvement for {Config.PATIENCE} consecutive epochs")
             break
     

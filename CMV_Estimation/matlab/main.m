@@ -1,7 +1,6 @@
 % main.m – Cloud Motion Vector Estimation
 % Defines all global configurations, loads images, then calls stage-specific scripts
 close all;
-
 %% Add Paths
 addpath(genpath('matlab'));
 addpath(genpath('python'));
@@ -65,17 +64,17 @@ synFiles = dir(fullfile(config.synthImageDirectory, '*.jpg'));
 config.numberSynthImages = numel(synFiles);
 
 %% Main-Loop
-pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_300_best_metric.pth'");
+% pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_300_best_metric.pth'");
 timing_results_300 = pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_300.pth'", "timing_results");
 
-pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_600_best_metric.pth'");
+% pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_600_best_metric.pth'");
 timing_results_600 = pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_600.pth'", "timing_results");
 
-pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_900_best_metric.pth'");
+% pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_900_best_metric.pth'");
 timing_results_900 = pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_900.pth'", "timing_results");
 
 timing_results_2000 = pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_2000.pth'", "timing_results");
-pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_2000.pth'");
+% pyrunfile("./python_scripts/raft_inference.py '--checkpoints' 'checkpoints/raft_finetune_2000.pth'");
 
 
 for idxPair = 1:2:config.numberImages
@@ -150,8 +149,8 @@ for translationIdx = 1:3
     
     reverseStr = '';
 
-    % for idxPair = 1:2:config.numberSynthImages
-    for idxPair = 1:2:4
+    for idxPair = 1:2:config.numberSynthImages
+    % for idxPair = 1:2:4
         % Load Images
         idx = (idxPair+1)/2;
         timestamp = regexp(synFiles(idxPair).name, '(\d{14})', 'tokens', 'once');

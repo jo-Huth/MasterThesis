@@ -48,7 +48,7 @@ class Config:
         300: PRETRAINED_RAFT,  # Start from Kubric pretrained
         600: CHECKPOINT_DIR  / "raft_finetune_300.pth",
         900: CHECKPOINT_DIR  / "raft_finetune_600.pth",
-        2000: CHECKPOINT_DIR / "raft_finetune_900.pth"
+        2000: CHECKPOINT_DIR / "raft_finetune_2000.pth"
     }
 
     # ============================================
@@ -67,7 +67,7 @@ class Config:
     # Training hyperparameters
     BATCH_SIZE = 1  # Increase if GPU memory allows
     LEARNING_RATE = 0.00001  # Lower for fine-tuning
-    NUM_EPOCHS = 10  # Adjust based on convergence
+    NUM_EPOCHS = 5  # Adjust based on convergence
     
 
     # Optimizer

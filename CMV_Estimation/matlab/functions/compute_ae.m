@@ -1,4 +1,4 @@
-function ae = compute_ae(flow_est, flow_gt, mask, syntheticTranslation)
+function ae = compute_ae(flow_est, flow_gt, mask)
 % COMPUTE_AE Mean Angular Error between estimated and ground truth flow
 %
 % AE = mean( acos( dot(v_est, v_gt) / (|v_est| |v_gt|) ) ) over valid pixels
@@ -33,4 +33,5 @@ function ae = compute_ae(flow_est, flow_gt, mask, syntheticTranslation)
     ae_map(~mask) = 0;
 
     ae = mean(ae_map(valid));
+    ae = ae * 180/pi;
 end

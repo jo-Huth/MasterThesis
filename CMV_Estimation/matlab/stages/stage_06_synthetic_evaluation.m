@@ -52,32 +52,32 @@ img2Resized(repmat(~maskResized, [1, 1, size(img2Resized,3)])) = 0;  % Black inv
 %% === COMPUTE METRICS Synthetic Flow ===
 
 % Endpoint Error (EPE)
-[synMetrics.LK.EPE(idx), synMetrics.LK.outliers(idx)]   = compute_epe(synFlowLK2,  flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.FB.EPE(idx), synMetrics.FB.outliers(idx)]   = compute_epe(synFlowFB2,  flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.RAFT.EPE(idx), synMetrics.RAFT.outliers(idx)] = compute_epe(synFlowRaftMl2, flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.RAFT_300.EPE(idx), synMetrics.RAFT_300.outliers(idx)] = compute_epe(synFlowRaftPy_300, flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.RAFT_600.EPE(idx), synMetrics.RAFT_600.outliers(idx)] = compute_epe(synFlowRaftPy_600, flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.RAFT_900.EPE(idx), synMetrics.RAFT_900.outliers(idx)] = compute_epe(synFlowRaftPy_900, flowSynGt, maskResized, syntheticTranslationMag);
-[synMetrics.RAFT_2000.EPE(idx), synMetrics.RAFT_2000.outliers(idx)] = compute_epe(synFlowRaftPy_2000, flowSynGt, maskResized, syntheticTranslationMag);
+[synMetrics.LK.EPE(idx), synMetrics.LK.outliers(idx)]   = compute_epe(synFlowLK2,  flowSynGt, maskResized);
+[synMetrics.FB.EPE(idx), synMetrics.FB.outliers(idx)]   = compute_epe(synFlowFB2,  flowSynGt, maskResized);
+[synMetrics.RAFT.EPE(idx), synMetrics.RAFT.outliers(idx)] = compute_epe(synFlowRaftMl2, flowSynGt, maskResized);
+[synMetrics.RAFT_300.EPE(idx), synMetrics.RAFT_300.outliers(idx)] = compute_epe(synFlowRaftPy_300, flowSynGt, maskResized);
+[synMetrics.RAFT_600.EPE(idx), synMetrics.RAFT_600.outliers(idx)] = compute_epe(synFlowRaftPy_600, flowSynGt, maskResized);
+[synMetrics.RAFT_900.EPE(idx), synMetrics.RAFT_900.outliers(idx)] = compute_epe(synFlowRaftPy_900, flowSynGt, maskResized);
+[synMetrics.RAFT_2000.EPE(idx), synMetrics.RAFT_2000.outliers(idx)] = compute_epe(synFlowRaftPy_2000, flowSynGt, maskResized);
 
 % Angular Error (AE)
-synMetrics.LK.AE(idx)    = compute_ae(synFlowLK2,  flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.FB.AE(idx)     = compute_ae(synFlowFB2,  flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.RAFT.AE(idx)   = compute_ae(synFlowRaftMl2, flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_300.AE(idx)   = compute_ae(synFlowRaftPy_300, flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_600.AE(idx)   = compute_ae(synFlowRaftPy_600, flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_900.AE(idx)   = compute_ae(synFlowRaftPy_900, flowSynGt, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_2000.AE(idx)   = compute_ae(synFlowRaftPy_2000, flowSynGt, maskResized, syntheticTranslationMag);
+synMetrics.LK.AE(idx)    = compute_ae(synFlowLK2,  flowSynGt, maskResized);
+synMetrics.FB.AE(idx)     = compute_ae(synFlowFB2,  flowSynGt, maskResized);
+synMetrics.RAFT.AE(idx)   = compute_ae(synFlowRaftMl2, flowSynGt, maskResized);
+synMetrics.RAFT_300.AE(idx)   = compute_ae(synFlowRaftPy_300, flowSynGt, maskResized);
+synMetrics.RAFT_600.AE(idx)   = compute_ae(synFlowRaftPy_600, flowSynGt, maskResized);
+synMetrics.RAFT_900.AE(idx)   = compute_ae(synFlowRaftPy_900, flowSynGt, maskResized);
+synMetrics.RAFT_2000.AE(idx)   = compute_ae(synFlowRaftPy_2000, flowSynGt, maskResized);
 
 
 % Coverage
-synMetrics.LK.coverage(idx)   = compute_coverage(synFlowLK2,  maskResized, syntheticTranslationMag);
-synMetrics.FB.coverage(idx)   = compute_coverage(synFlowFB2,  maskResized, syntheticTranslationMag);
-synMetrics.RAFT.coverage(idx) = compute_coverage(synFlowRaftMl2, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_300.coverage(idx) = compute_coverage(synFlowRaftPy_300, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_600.coverage(idx) = compute_coverage(synFlowRaftPy_600, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_900.coverage(idx) = compute_coverage(synFlowRaftPy_900, maskResized, syntheticTranslationMag);
-synMetrics.RAFT_2000.coverage(idx) = compute_coverage(synFlowRaftPy_2000, maskResized, syntheticTranslationMag);
+synMetrics.LK.coverage(idx)   = compute_coverage(synFlowLK2,  maskResized);
+synMetrics.FB.coverage(idx)   = compute_coverage(synFlowFB2,  maskResized);
+synMetrics.RAFT.coverage(idx) = compute_coverage(synFlowRaftMl2, maskResized);
+synMetrics.RAFT_300.coverage(idx) = compute_coverage(synFlowRaftPy_300, maskResized);
+synMetrics.RAFT_600.coverage(idx) = compute_coverage(synFlowRaftPy_600, maskResized);
+synMetrics.RAFT_900.coverage(idx) = compute_coverage(synFlowRaftPy_900, maskResized);
+synMetrics.RAFT_2000.coverage(idx) = compute_coverage(synFlowRaftPy_2000, maskResized);
 
 raftEPE = cat(5, synMetrics.RAFT_300.EPE, synMetrics.RAFT_600.EPE, synMetrics.RAFT_900.EPE, synMetrics.RAFT_2000.EPE, synMetrics.RAFT.EPE);
 maxEPE_RAFT = prctile(raftEPE(:), 99); 
@@ -126,94 +126,94 @@ if idx == 200
     fprintf('✓ Saved: %s\n', metrics_file);
 end
 %% === VISUALIZATION ===
-figure('Position', [100 100 1400 400]);
-
-% EPE error map
-subplot(1,3,1);
-epe_lk = compute_epe_map(synFlowLK2, flowSynGt, maskResized);
-imagesc(epe_lk); clim([0 maxEPE]); colorbar; colormap('jet'); axis image;
-title('LK EPE Error Map');
-
-subplot(1,3,2);
-epe_fb = compute_epe_map(synFlowFB2, flowSynGt, maskResized);
-imagesc(epe_fb); clim([0 maxEPE]); colorbar; colormap('jet'); axis image;
-title('Farnebäck EPE Error Map');
-
-subplot(1,3,3);
-epe_ml = compute_epe_map(synFlowRaftMl2, flowSynGt, maskResized);
-imagesc(epe_ml); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
-title('RAFT EPE Error Map');
-
-sgtitle('Endpoint Error Maps (Red = High Error)', 'FontSize', 14);
-
-filename = sprintf('synEvaluation_matlab_flow_%s.fig', timestamp{1});
-path =  strcat(config.resultsDir,'\evaluation');
-fig = fullfile(path, filename);
-savefig(fig)
-
-% Raft
-figure('Position', [100 100 1400 400]);
-
-% EPE error map 
-
-subplot(1,4,1);
-epe_300 = compute_epe_map(synFlowRaftPy_300, flowSynGt, maskResized);
-imagesc(epe_300); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
-title('300 EPE Error Map');
-
-subplot(1,4,2);
-epe_600 = compute_epe_map(synFlowRaftPy_600, flowSynGt, maskResized);
-imagesc(epe_600); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
-title('600 EPE Error Map');
-
-subplot(1,4,3);
-epe_900 = compute_epe_map(synFlowRaftPy_900, flowSynGt, maskResized);
-imagesc(epe_900); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
-title('900 EPE Error Map');
-
-subplot(1,4,4);
-epe_2000 = compute_epe_map(synFlowRaftPy_2000, flowSynGt, maskResized);
-imagesc(epe_2000); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
-title('1600 EPE Error Map');
-
-sgtitle('Endpoint Error Maps (Red = High Error)', 'FontSize', 14);
-
-filename = sprintf('synEvaluation_python_flow_%s.fig', timestamp{1});
-path =  strcat(config.resultsDir,'\evaluation');
-fig = fullfile(path, filename);
-savefig(fig)
-
-
-figure; imshow(img2Resized); hold on;
-plot(synFlowFB2, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
-title('synFlowFB2');
-
-figure; imshow(img2Resized); hold on;
-plot(synFlowLK2, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
-title('synFlowLK2');
-
-figure; imshow(img1Resized); hold on;
-plot(synFlowRaftMl2, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
-title('RAFT Matlab Flow');
-
-figure; imshow(img1Resized); hold on;
-plot(flowSynGt, 'DecimationFactor',[5 5],'ScaleFactor',0.8,'Color','blue');
-title('Synthetic Flow');
-
-figure; imshow(img1Resized); hold on;
-plot(synFlowRaftPy_300, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
-title('Flow Raft 300');
-
-figure; imshow(img1Resized); hold on;
-plot(synFlowRaftPy_600, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
-title('Flow Raft 600');
-
-figure; imshow(img1Resized); hold on;
-plot(synFlowRaftPy_900, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
-title('Flow Raft 900');
-
-figure; imshow(img1Resized); hold on;
-plot(synFlowRaftPy_2000, 'DecimationFactor',[5 5],'ScaleFactor',0.8,'Color','blue');
-title('Flow Raft 1600');
-
-drawnow
+% figure('Position', [100 100 1400 400]);
+% 
+% % EPE error map
+% subplot(1,3,1);
+% epe_lk = compute_epe_map(synFlowLK2, flowSynGt, maskResized);
+% imagesc(epe_lk); clim([0 maxEPE]); colorbar; colormap('jet'); axis image;
+% title('LK EPE Error Map');
+% 
+% subplot(1,3,2);
+% epe_fb = compute_epe_map(synFlowFB2, flowSynGt, maskResized);
+% imagesc(epe_fb); clim([0 maxEPE]); colorbar; colormap('jet'); axis image;
+% title('Farnebäck EPE Error Map');
+% 
+% subplot(1,3,3);
+% epe_ml = compute_epe_map(synFlowRaftMl2, flowSynGt, maskResized);
+% imagesc(epe_ml); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
+% title('RAFT EPE Error Map');
+% 
+% sgtitle('Endpoint Error Maps (Red = High Error)', 'FontSize', 14);
+% 
+% filename = sprintf('synEvaluation_matlab_flow_%s.fig', timestamp{1});
+% path =  strcat(config.resultsDir,'\evaluation');
+% fig = fullfile(path, filename);
+% savefig(fig)
+% 
+% % Raft
+% figure('Position', [100 100 1400 400]);
+% 
+% % EPE error map 
+% 
+% subplot(1,4,1);
+% epe_300 = compute_epe_map(synFlowRaftPy_300, flowSynGt, maskResized);
+% imagesc(epe_300); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
+% title('300 EPE Error Map');
+% 
+% subplot(1,4,2);
+% epe_600 = compute_epe_map(synFlowRaftPy_600, flowSynGt, maskResized);
+% imagesc(epe_600); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
+% title('600 EPE Error Map');
+% 
+% subplot(1,4,3);
+% epe_900 = compute_epe_map(synFlowRaftPy_900, flowSynGt, maskResized);
+% imagesc(epe_900); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
+% title('900 EPE Error Map');
+% 
+% subplot(1,4,4);
+% epe_2000 = compute_epe_map(synFlowRaftPy_2000, flowSynGt, maskResized);
+% imagesc(epe_2000); clim([0 maxEPE_RAFT]); colorbar; colormap('jet'); axis image;
+% title('1600 EPE Error Map');
+% 
+% sgtitle('Endpoint Error Maps (Red = High Error)', 'FontSize', 14);
+% 
+% filename = sprintf('synEvaluation_python_flow_%s.fig', timestamp{1});
+% path =  strcat(config.resultsDir,'\evaluation');
+% fig = fullfile(path, filename);
+% savefig(fig)
+% 
+% 
+% figure; imshow(img2Resized); hold on;
+% plot(synFlowFB2, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+% title('synFlowFB2');
+% 
+% figure; imshow(img2Resized); hold on;
+% plot(synFlowLK2, 'DecimationFactor',[5 5],'ScaleFactor',1,'Color','blue');
+% title('synFlowLK2');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(synFlowRaftMl2, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
+% title('RAFT Matlab Flow');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(flowSynGt, 'DecimationFactor',[5 5],'ScaleFactor',0.8,'Color','blue');
+% title('Synthetic Flow');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(synFlowRaftPy_300, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
+% title('Flow Raft 300');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(synFlowRaftPy_600, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
+% title('Flow Raft 600');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(synFlowRaftPy_900, 'DecimationFactor',[5 5],'ScaleFactor',0.5,'Color','blue');
+% title('Flow Raft 900');
+% 
+% figure; imshow(img1Resized); hold on;
+% plot(synFlowRaftPy_2000, 'DecimationFactor',[5 5],'ScaleFactor',0.8,'Color','blue');
+% title('Flow Raft 1600');
+% 
+% drawnow

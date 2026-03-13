@@ -149,9 +149,9 @@ if __name__ == "__main__":
         valloader = get_valdataloader(
             config=Config
         )
-        print(f"✓ ValDataLoader created with {len(valloader)}\n")
+        print(f" ValDataLoader created with {len(valloader)}\n")
     except Exception as e:
-        print(f"\n❌ ERROR creating valloader: {e}")
+        print(f"\n ERROR creating valloader: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
@@ -166,12 +166,12 @@ if __name__ == "__main__":
             checkpoint = torch.load(checkpoint_path, map_location=device)
             print(f"Loading checkpoint: {checkpoint_path}")
         else:
-            print(f"⚠️  no checkpoints loaded\n")
+            print(f" no checkpoints loaded\n")
         
         model = model.to(device)
 
     except Exception as e:
-        print(f"\n❌ ERROR loading model: {e}")
+        print(f"\n ERROR loading model: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)

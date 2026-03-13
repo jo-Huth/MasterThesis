@@ -1,6 +1,6 @@
 function create_synthetic_images(createSynFiles, syntheticTranslation, config)
     createSynthImages = config.createSynthImages;
-    parfor idxPair = 1:config.numberCreateSynImages
+    for idxPair = 1:config.numberCreateSynImages
         
         timestamp = regexp(createSynFiles(idxPair).name, '(\d{14})', 'tokens', 'once');
         

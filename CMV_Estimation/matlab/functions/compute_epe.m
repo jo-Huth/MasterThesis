@@ -1,4 +1,4 @@
-function [epe, outliers] = compute_epe(flowEst, flowGt, mask, syntheticTranslation)
+function [epe, outliers] = compute_epe(flowEst, flowGt, mask)
 % COMPUTE_EPE Mean Endpoint Error between estimated and ground truth flow
 %
 % EPE = mean( ||flow_est - flow_gt|| ) over valid pixels
@@ -26,7 +26,7 @@ function [epe, outliers] = compute_epe(flowEst, flowGt, mask, syntheticTranslati
     
     epeMap(~mask) = 0;
     outliers = (epeMap > 3) & valid;
-    outliers = sum(outliers)/sum(valid);
+    outliers = sum(outliers)/sum(valid) * 100;
     % Mean over masked region
     epe = mean(epeMap(valid));
 end

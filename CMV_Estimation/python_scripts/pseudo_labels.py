@@ -52,36 +52,6 @@ def compute_farneback_flow(img1, img2, show_debug=False):
     return flow
 
 
-def compute_flow_confidence(flow):
-    """
-    Compute confidence score for optical flow.
-    
-    Higher confidence = more reliable flow estimate.
-    
-    Args:
-        flow: Optical flow (H, W, 2)
-        method: 'magnitude', 'gradient', or 'hybrid'
-    
-    Returns:
-        confidence: (H, W) in range [0, 1]
-    """
-    u, v = flow[...,0], flow[...,1]
-    mag = np.sqrt(u**2 + v**2)
-    
-    mag_conf = np.exp(-0.5 * ((mag - 1.0)/2.0)**2)  # Peak at 1px/frame
-    
-    u_dy, u_dx = np.gradient(u)      # Separate axis grads
-    v_dy, v_dx = np.gradient(v)
-
-    grad_mag = np.sqrt(u_dy**2 + u_dx**2 + v_dy**2 + v_dx**2)  # Noise penalty
-
-    smooth_conf = np.exp(-0.1 * grad_mag)
-    conf = 0.7 * mag_conf + 0.3 * smooth_conf
-    confidence = np.clip(conf, 0, 1)
-    
-    return confidence
-
-
 def generate_pseudo_labels(img1, img2, confidence_threshold, show_debug=False):
     """
     Generate pseudo-labels from Farnebäck flow with confidence weighting.
